@@ -112,10 +112,9 @@ public class Main {
                                 System.out.printf("Select what edit - 1 - Name, 2 - Number, 3 - Skype\n");
                                 answeredit = sc1.nextLine();
                                 int editCh = Integer.parseInt(answeredit);
+                                if (editCh == 1 || editCh == 2 || editCh == 3 ) {
+                                    
                                 switch (editCh) {
-                                    default:
-                                        System.out.println("Edit Canceled");
-                                        break;
                                     case 1:
                                         System.out.println("Enter new name for id - " + id);
                                         String answerName = sc1.nextLine();
@@ -134,6 +133,9 @@ public class Main {
                                         stmt.executeUpdate("UPDATE contacts set skype='" + answerSkype + "' WHERE id='" + id + "'");
                                         System.out.println("Contact id=" + id + " - updated");
                                         break;
+                                }
+                                } else {
+                                    System.out.println("Edit Canceled");
                                 }
                             } else {
                                 System.out.println("Edit Canceled");
