@@ -79,7 +79,68 @@ public class Main {
                         String insert = "INSERT INTO test.contacts (name, number, skype)\n"
                                 + "VALUES ('" + inputname + "' , '" + inputnumber + "', '" + inputskype + "')";
                         stmt.executeUpdate(insert);
+                        System.out.println("Contact Add Finished");
 
+                    } catch (Exception e) {
+                        System.out.println("No connection to db - Error - " + e);
+                    }
+                    break;
+                case 3:
+                    try (Connection conn = DriverManager.getConnection(connectionString, username, password)) {
+                        Statement stmt = conn.createStatement();
+                        System.out.println("What to find for edit: ");
+                        String find = sc1.nextLine();
+                        String findQuery = "SELECT * FROM contacts WHERE id = '" + find + "' or name = '" + find + "' or number = '" + find + "' or skype = '" + find + "'";
+                        ResultSet rs = stmt.executeQuery(findQuery);
+                        if (rs.next()) {
+
+                            System.out.println("+------------------------------------------------------------+");
+                            System.out.println("|--------------------------CONTACT---------------------------|");
+                            System.out.println("|------------------------------------------------------------|");
+                            System.out.println("+ID|Name----------------|Tel.Number-----|Skype---------------+");
+
+                            int id = rs.getInt(1);
+                            String name = rs.getString(2);
+                            String number = rs.getString(3);
+                            String skype = rs.getString(4);
+                            System.out.printf("|%-2s|%-20s| %-13s |%-20s|\n", id, name, number, skype);
+
+                            System.out.println("+------------------------------------------------------------+");
+                            System.out.println("Edit contact? (type  - yes for confirm)");
+                            String answeredit = sc1.nextLine();
+                            if (answeredit.toLowerCase().equals("yes")) {
+                                System.out.printf("Select what edit - 1 - Name, 2 - Number, 3 - Skype\n");
+                                answeredit = sc1.nextLine();
+                                int editCh = Integer.parseInt(answeredit);
+                                switch (editCh) {
+                                    default:
+                                        System.out.println("Edit Canceled");
+                                        break;
+                                    case 1:
+                                        System.out.println("Enter new name for id - " + id);
+                                        String answerName = sc1.nextLine();
+                                        stmt.executeUpdate("UPDATE contacts set name='" + answerName + "' WHERE id='" + id + "'");
+                                        System.out.println("Contact id=" + id + " - updated");
+                                        break;
+                                    case 2:
+                                        System.out.println("Enter new number for id - " + id);
+                                        String answerNumber = sc1.nextLine();
+                                        stmt.executeUpdate("UPDATE contacts set number='" + answerNumber + "' WHERE id='" + id + "'");
+                                        System.out.println("Contact id=" + id + " - updated");
+                                        break;
+                                    case 3:
+                                        System.out.println("Enter new Skype for id - " + id);
+                                        String answerSkype = sc1.nextLine();
+                                        stmt.executeUpdate("UPDATE contacts set skype='" + answerSkype + "' WHERE id='" + id + "'");
+                                        System.out.println("Contact id=" + id + " - updated");
+                                        break;
+                                }
+                            } else {
+                                System.out.println("Edit Canceled");
+                            }
+                        } else {
+                            System.out.println("Nothing found :.(");
+                        }
                     } catch (Exception e) {
                         System.out.println("No connection to db - Error - " + e);
                     }
@@ -136,7 +197,7 @@ public class Main {
                                 System.out.printf("|%-2s|%-20s| %-13s |%-20s|\n", id, name, number, skype);
                             }
                             System.out.println("+------------------------------------------------------------+");
-                            System.out.println("Delete this contacts? type yes for confirm");
+                            System.out.println("Delete contact(s)? (type  - yes for confirm)");
                             String answerdel = sc1.nextLine();
                             if (answerdel.toLowerCase().equals("yes")) {
                                 for (Object id : idfordel) {
