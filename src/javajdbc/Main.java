@@ -79,7 +79,7 @@ public class Main {
                         String insert = "INSERT INTO test.contacts (name, number, skype)\n"
                                 + "VALUES ('" + inputname + "' , '" + inputnumber + "', '" + inputskype + "')";
                         stmt.executeUpdate(insert);
-                        System.out.println("Contact Add Finished");
+                        System.out.println("Contact Add Finished!");
 
                     } catch (Exception e) {
                         System.out.println("No connection to db - Error - " + e);
